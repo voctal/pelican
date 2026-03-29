@@ -1,8 +1,8 @@
 import z from "zod";
-import { Allocation, allocationListSchema } from "./allocation";
-import { EggVariable, eggVariableListSchema } from "./egg-variable";
+import { Allocation, allocationSchema } from "./allocation";
+import { EggVariable, eggVariableSchema } from "./egg-variable";
 import { GenericObject, genericObjectSchema } from "./generic";
-import { createListSchema, List } from "./list";
+import { createGenericListSchema, createListSchema, GenericList } from "./list";
 import { serverObjectType } from "./server";
 
 /**
@@ -11,7 +11,7 @@ import { serverObjectType } from "./server";
 export interface ClientServer extends GenericObject {
     object: typeof serverObjectType;
     attributes: ClientServerAttributes;
-    meta: {
+    meta?: {
         is_server_owner: boolean;
         user_permissions: string[];
     };
@@ -43,8 +43,8 @@ export interface ClientServerAttributes {
     is_installing: boolean;
     is_transferring: boolean;
     relationships?: {
-        allocations?: List<Allocation>;
-        variables?: List<EggVariable>;
+        allocations?: GenericList<Allocation>;
+        variables?: GenericList<EggVariable>;
     };
 }
 
@@ -140,15 +140,17 @@ export const clientServerSchema = genericObjectSchema.extend({
         is_transferring: z.boolean(),
         relationships: z
             .object({
-                allocations: allocationListSchema.optional(),
-                variables: eggVariableListSchema.optional(),
+                allocations: createGenericListSchema(allocationSchema).optional(),
+                variables: createGenericListSchema(eggVariableSchema).optional(),
             })
             .optional(),
     }),
-    meta: z.object({
-        is_server_owner: z.boolean(),
-        user_permissions: z.array(z.string()),
-    }),
+    meta: z
+        .object({
+            is_server_owner: z.boolean(),
+            user_permissions: z.array(z.string()),
+        })
+        .optional(),
 }) satisfies z.ZodType<ClientServer>;
 
 export const clientServerListSchema = createListSchema(clientServerSchema);
