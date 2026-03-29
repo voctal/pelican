@@ -6,11 +6,17 @@ import z from "zod";
 export const listObjectType = "list" as const;
 
 /**
- * Represents a list object.
+ * Represents a list object, without the pagination metadata.
  */
-export interface List<T> {
+export interface GenericList<T> {
     object: typeof listObjectType;
     data: T[];
+}
+
+/**
+ * Represents a list object.
+ */
+export interface List<T> extends GenericList<T> {
     meta: ListMeta;
 }
 
@@ -27,6 +33,13 @@ export interface ListMeta {
         links: Record<string, unknown>;
     };
 }
+
+export const createGenericListSchema = <T extends z.ZodType>(innerSchema: T) => {
+    return z.object({
+        object: z.literal(listObjectType),
+        data: z.array(innerSchema),
+    });
+};
 
 export const createListSchema = <T extends z.ZodType>(innerSchema: T) => {
     return z.object({
