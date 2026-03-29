@@ -83,7 +83,7 @@ export class Users extends Controller {
      *
      * Route: `GET /api/application/users/external/{external_id}`
      */
-    public async getByExternalId(externalId: string) {
+    public async getByExternalId(externalId: string): Promise<User> {
         const json = await this.client.rest.get(`application/users/external/${externalId}`);
         return userSchema.parse(json);
     }
