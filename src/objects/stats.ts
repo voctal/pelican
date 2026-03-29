@@ -32,10 +32,6 @@ export interface ResourceStatsAttributes {
          */
         memory_bytes: number;
         /**
-         * Maximum memory allowed in bytes.
-         */
-        memory_limit_bytes: number;
-        /**
          * Current CPU usage in percentage.
          *
          * This is non-integer number.
@@ -67,7 +63,6 @@ export const resourceStatsSchema = genericObjectSchema.extend({
         is_suspended: z.boolean(),
         resources: z.object({
             memory_bytes: z.int(),
-            memory_limit_bytes: z.int(),
             cpu_absolute: z.number(),
             disk_bytes: z.int(),
             network_rx_bytes: z.int(),
