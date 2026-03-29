@@ -15,4 +15,4 @@ export const genericObjectSchema = z.object({
     attributes: z.object(),
     relationships: z.record(z.string(), z.unknown()).optional(),
     meta: z.record(z.string(), z.unknown()).optional(),
-});
+}) satisfies z.ZodType<GenericObject>;
