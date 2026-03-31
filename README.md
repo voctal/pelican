@@ -83,15 +83,17 @@ const firstServerId = servers.data[0]?.attributes.identifier;
 if (!firstServerId) return console.log("No servers!");
 
 // Create the WebSocket
-const ws = new PelicanWebSocket(client);
-const token = await ws.getToken(firstServerId);
+const ws = new PelicanWebSocket(client, firstServerId);
 
 ws.on(WebSocketEvents.ConsoleOutput, log => {
     console.log("New server log: ", log);
 });
 
-const socket = await ws.connect(token.data);
-// `socket` is a native WebSocket instance that you can use if necessary.
+ws.on(WebSocketEvents.Stats, stats => {
+    console.log("New stats: ", stats);
+});
+
+await ws.connect();
 ```
 
 If you are using the `REST` class, you might need the Zod schemas to validate the responses. They are all available from `@voctal/pelican/schemas`:
