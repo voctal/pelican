@@ -18,6 +18,14 @@ You can find the Pelican API docs on your own panel at `https://<domain>/docs/ap
 > [!NOTE]
 > This module is still under development and does not include every features. Not everything was fully tested. However you can use the `rest` property of `PelicanApplication` and `PelicanClient` to access the API routes that this module does not support.
 
+## Features
+
+- Client API
+- Application API
+- WebSocket API
+- All responses are validated using Zod
+- (almost) Fully typed and documented
+
 ## Installation
 
 Node.js 22 or newer is required.
@@ -28,7 +36,7 @@ npm install @voctal/pelican
 
 ## Example usage
 
-Use PelicanApplication to interact with the Application API:
+Use `PelicanApplication` to interact with the Application API:
 
 ```js
 import { PelicanApplication } from "@voctal/pelican";
@@ -43,7 +51,7 @@ const users = await application.users.list();
 // See all methods on the documentation
 ```
 
-Use PelicanClient to interact with the Client API:
+Use `PelicanClient` to interact with the Client API:
 
 ```js
 import { PelicanClient } from "@voctal/pelican";
@@ -53,13 +61,40 @@ const client = new PelicanClient({
     url: "https://example.com",
 });
 
-const account = await application.account.get();
-const servers = await application.servers.list();
-const files = await application.files.list(serverId);
+const account = await client.account.get();
+const servers = await client.servers.list();
+const files = await client.files.list(serverId);
 // See all methods on the documentation
 ```
 
-If you are using the `REST` class, you might need the Zod schemas to validate the responses. They are all available from here:
+Use `PelicanWebSocket` to interact with the WebSocket API:
+
+```js
+import { PelicanClient, PelicanWebSocket, WebSocketEvents } from "@voctal/pelican";
+
+const client = new PelicanClient({
+    token: "...",
+    url: "https://example.com",
+});
+
+// Get a server identifier
+const servers = await client.servers.list();
+const firstServerId = servers.data[0]?.attributes.identifier;
+if (!firstServerId) return console.log("No servers!");
+
+// Create the WebSocket
+const ws = new PelicanWebSocket(client);
+const token = await ws.getToken(firstServerId);
+
+ws.on(WebSocketEvents.ConsoleOutput, log => {
+    console.log("New server log: ", log);
+});
+
+const socket = await ws.connect(token.data);
+// `socket` is a native WebSocket instance that you can use if necessary.
+```
+
+If you are using the `REST` class, you might need the Zod schemas to validate the responses. They are all available from `@voctal/pelican/schemas`:
 
 ```js
 import { userSchema } from "@voctal/pelican/schemas";
