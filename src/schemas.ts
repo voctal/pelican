@@ -11,3 +11,5 @@ export { serverSchema, serverListSchema } from "./objects/server";
 export { signedURLSchema } from "./objects/signed-url";
 export { resourceStatsSchema } from "./objects/stats";
 export { userSchema, userListSchema, createdUserSchema } from "./objects/user";
+export { webSocketTokenSchema } from "./objects/websocket-token";
+export { webSocketMessageSchema, webSocketStatsEventDataSchema } from "./objects/websocket";

@@ -10,6 +10,8 @@ export * from "./client/client-servers";
 export * from "./client/client";
 export * from "./client/files";
 
+export * from "./websocket/websocket";
+
 export * from "./rest/errors";
 export * from "./rest/rest";
 
@@ -41,5 +43,18 @@ export type {
     ServerLimits,
 } from "./objects/server";
 export type { signedURLObjectType, SignedURL, SignedURLAttributes } from "./objects/signed-url";
-export type { resourceStatsObjectType, ResourceStats, ResourceStatsAttributes } from "./objects/stats";
+export type {
+    resourceStatsObjectType,
+    ResourceStats,
+    ResourceStatsAttributes,
+    ServerResources,
+    ServerState,
+} from "./objects/stats";
 export type { userObjectType, User, UserAttributes, CreatedUser } from "./objects/user";
+export type { WebSocketToken, WebSocketTokenData } from "./objects/websocket-token";
+export {
+    type WebSocketMessage,
+    WebSocketEvents,
+    type WebSocketEventMap,
+    type WebSocketStatsEventData,
+} from "./objects/websocket";
