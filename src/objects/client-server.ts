@@ -36,7 +36,7 @@ export interface ClientServerAttributes {
     limits: ClientServerLimits;
     invocation: string;
     docker_image: string;
-    egg_features: unknown[];
+    egg_features: unknown[] | null;
     feature_limits: ClientServerFeatureLimits;
     status: unknown | null;
     is_suspended: boolean;
@@ -128,7 +128,7 @@ export const clientServerSchema = genericObjectSchema.extend({
         }),
         invocation: z.string(),
         docker_image: z.string(),
-        egg_features: z.array(z.unknown()),
+        egg_features: z.array(z.unknown()).nullable(),
         feature_limits: z.object({
             databases: z.int(),
             allocations: z.int(),
