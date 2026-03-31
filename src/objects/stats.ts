@@ -26,35 +26,45 @@ export interface ResourceStatsAttributes {
      * If the server is suspended.
      */
     is_suspended: boolean;
-    resources: {
-        /**
-         * Current memory usage in bytes.
-         */
-        memory_bytes: number;
-        /**
-         * Current CPU usage in percentage.
-         *
-         * This is non-integer number.
-         */
-        cpu_absolute: number;
-        /**
-         * Current disk usage in bytes.
-         */
-        disk_bytes: number;
-        /**
-         * Total bytes received.
-         */
-        network_rx_bytes: number;
-        /**
-         * Total bytes transmitted.
-         */
-        network_tx_bytes: number;
-        /**
-         * Server uptime in milliseconds.
-         */
-        uptime: number;
-    };
+    resources: ServerResources;
 }
+
+/**
+ * Server resources inside a `stats` object.
+ */
+export interface ServerResources {
+    /**
+     * Current memory usage in bytes.
+     */
+    memory_bytes: number;
+    /**
+     * Current CPU usage in percentage.
+     *
+     * This is non-integer number.
+     */
+    cpu_absolute: number;
+    /**
+     * Current disk usage in bytes.
+     */
+    disk_bytes: number;
+    /**
+     * Total bytes received.
+     */
+    network_rx_bytes: number;
+    /**
+     * Total bytes transmitted.
+     */
+    network_tx_bytes: number;
+    /**
+     * Server uptime in milliseconds.
+     */
+    uptime: number;
+}
+
+/**
+ * Possible server states. (Possibly incomplete)
+ */
+export type ServerState = "running" | "starting" | "stopping" | "offline" | (string & {});
 
 export const resourceStatsSchema = genericObjectSchema.extend({
     object: z.literal(resourceStatsObjectType),
