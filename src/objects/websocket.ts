@@ -12,9 +12,9 @@ export interface WebSocketMessage {
     /**
      * The event arguments.
      *
-     * This can be missing for some events, like `auth success`.
+     * This can be missing for some events like `auth success`, or arguments can be null for some events like `send logs`.
      */
-    args?: string[];
+    args?: (string | null)[];
 }
 
 /**
@@ -22,52 +22,103 @@ export interface WebSocketMessage {
  */
 export enum WebSocketEvents {
     /**
-     * Client -> Server
+     * Authenticate with JWT token
+     *
+     * - Arguments: [token: string]
+     *
+     * - Direction: `Client -> Server`
      */
     Auth = "auth",
     /**
-     * Client -> Server
+     * Change server power state
+     *
+     * - Arguments: [state: ServerState]
+     *
+     * - Direction: `Client -> Server`
      */
     SetState = "set state",
     /**
-     * Client -> Server
+     * Send console command
+     *
+     * - Arguments: [command: string]
+     *
+     * - Direction: `Client -> Server`
      */
     SendCommand = "send command",
     /**
-     * Server -> Client
+     * Ask for the server logs (useful when connecting to the WS)
+     *
+     * - Arguments: [null]
+     *
+     * - Direction: `Client -> Server`
+     */
+    SendLogs = "send logs",
+    /**
+     * Successful authentication
+     *
+     * - Arguments: none
+     *
+     * - Direction: `Server -> Client`
      */
     AuthSuccess = "auth success",
     /**
-     * Server -> Client
+     * Console output/logs
+     *
+     * - Arguments: [log: string]
+     *
+     * - Direction: `Server -> Client`
      */
     ConsoleOutput = "console output",
     /**
-     * Server -> Client
+     * Server status updates
+     *
+     * - Arguments: [status: string]
+     *
+     * - Direction: `Server -> Client`
      */
     Status = "status",
     /**
-     * Server -> Client
+     * Resource usage statistics
+     *
+     * - Arguments: [stats: stringified WebSocketStatsEventData]
+     *
+     * - Direction: `Server -> Client`
      */
     Stats = "stats",
     /**
-     * Server -> Client
+     * Authentication error
+     *
+     * - Arguments: [error: string]
+     *
+     * - Direction: `Server -> Client`
      */
     JWTError = "jwt error",
     /**
-     * Server -> Client
+     * System messages
+     *
+     * - Arguments: [log: string]
+     *
+     * - Direction: `Server -> Client`
      */
     DaemonMessage = "daemon message",
 }
 
+/**
+ * The WebSocket event map for `PelicanWebSocket`.
+ */
 export interface WebSocketEventMap {
-    "auth success": never[];
-    "console output": [string];
-    status: [ServerState];
-    stats: [WebSocketStatsEventData];
-    "jwt error": [string];
-    "daemon message": [string];
+    [WebSocketEvents.Auth]: never[];
+    [WebSocketEvents.ConsoleOutput]: [string];
+    [WebSocketEvents.Status]: [ServerState];
+    [WebSocketEvents.Stats]: [WebSocketStatsEventData];
+    [WebSocketEvents.JWTError]: [string];
+    [WebSocketEvents.DaemonMessage]: [string];
     /**
-     * WebSocket error.
+     * Native WebSocket "open" event
+     */
+    open: never[];
+    /**
+     * An error occured. Also re-emit all the errors from the underlying native WebSocket.
      */
     error: [Error];
     /**

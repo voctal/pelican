@@ -9,7 +9,7 @@ import {
     webSocketMessageSchema,
     webSocketStatsEventDataSchema,
 } from "../objects/websocket";
-import { WebSocketToken, WebSocketTokenData, webSocketTokenSchema } from "../objects/websocket-token";
+import { WebSocketTokenData } from "../objects/websocket-token";
 
 /**
  * The WebSocket API wrapper class. The user needs the `websocket.connect` permission to get auth tokens.
@@ -19,7 +19,7 @@ import { WebSocketToken, WebSocketTokenData, webSocketTokenSchema } from "../obj
  */
 export class PelicanWebSocket extends EventEmitter<WebSocketEventMap> {
     /**
-     * The socket.
+     * The underlying socket.
      */
     public socket: WebSocket | null = null;
 
@@ -36,29 +36,18 @@ export class PelicanWebSocket extends EventEmitter<WebSocketEventMap> {
     }
 
     /**
-     * Get a WebSocket token to create a new session.
-     * Tokens expires 10 minutes after creation.
-     *
-     * Route: `GET /api/client/servers/{server}/websocket`
-     */
-    public async getToken(): Promise<WebSocketToken> {
-        const json = await this.client.rest.get(`client/servers/${this.serverId}/websocket`);
-        return webSocketTokenSchema.parse(json);
-    }
-
-    /**
      * Connect to the gateway. This will instantiate `PelicanWebSocket#socket`.
      *
      * If successful, you should receive the `auth success` and `status` events.
      *
-     * @param data - The data obtained from `getToken`
+     * @param data - The token data obtained from `client.servers.getWebSocketToken`
      */
     public async connect(data?: WebSocketTokenData) {
         if (this.isConnecting) return;
         this.isConnecting = true;
 
         try {
-            const tokenData = data || (await this.getToken()).data;
+            const tokenData = data || (await this.client.servers.getWebSocketToken(this.serverId)).data;
 
             this.socket = new WebSocket(tokenData.socket, {
                 headers: {
@@ -67,11 +56,12 @@ export class PelicanWebSocket extends EventEmitter<WebSocketEventMap> {
                 },
             });
 
-            this.socket.onopen = () => {
+            this.socket.addEventListener("open", () => {
+                this.emit("open");
                 this.sendMessage({ event: WebSocketEvents.Auth, args: [tokenData.token] });
-            };
+            });
 
-            this.socket.onmessage = event => {
+            this.socket.addEventListener("message", event => {
                 try {
                     const raw = JSON.parse(event.data);
                     const data = webSocketMessageSchema.parse(raw);
@@ -80,20 +70,20 @@ export class PelicanWebSocket extends EventEmitter<WebSocketEventMap> {
                     const error = err instanceof Error ? err : new Error("WebSocket onmessage error", { cause: err });
                     this.emit("error", error);
                 }
-            };
+            });
 
-            this.socket.onclose = event => {
+            this.socket.addEventListener("close", event => {
                 try {
                     this.handleClose(event);
                 } catch (err) {
                     const error = err instanceof Error ? err : new Error("WebSocket onmessage error", { cause: err });
                     this.emit("error", error);
                 }
-            };
+            });
 
-            this.socket.onerror = event => {
+            this.socket.addEventListener("error", event => {
                 this.emit("error", event.error);
-            };
+            });
         } catch (err) {
             const error = err instanceof Error ? err : new Error("WebSocket connect error", { cause: err });
             this.emit("error", error);
@@ -134,12 +124,11 @@ export class PelicanWebSocket extends EventEmitter<WebSocketEventMap> {
 
     /**
      * Send a message through the WebSocket.
-     *
-     * @throws Error if the socket is not open
      */
     public sendMessage(data: WebSocketMessage) {
         if (!this.socket || this.socket.readyState !== WebSocket.OPEN) {
-            throw new Error("Cannot send a message when the socket is not open");
+            this.emit("error", new Error("Cannot send a message when the socket is not open"));
+            return;
         }
         this.socket.send(JSON.stringify(data));
     }
@@ -162,42 +151,54 @@ export class PelicanWebSocket extends EventEmitter<WebSocketEventMap> {
      */
     private handleMessage(message: WebSocketMessage) {
         switch (message.event) {
-            case "auth success": {
+            case WebSocketEvents.AuthSuccess: {
                 this.emit(WebSocketEvents.AuthSuccess);
                 break;
             }
-            case "console output": {
+            case WebSocketEvents.ConsoleOutput: {
                 const log = message.args?.[0];
-                assert(log, `received the '${message.event}' event but without any arguments`);
+                assert(
+                    typeof log === "string",
+                    `received the '${message.event}' event but with invalid arguments (args: ${message.args})`,
+                );
 
                 this.emit(WebSocketEvents.ConsoleOutput, log);
                 break;
             }
-            case "status": {
+            case WebSocketEvents.Status: {
                 const newState = message.args?.[0];
-                assert(newState, `received the '${message.event}' event but without any arguments`);
+                assert(
+                    newState,
+                    `received the '${message.event}' event but without any arguments (args: ${message.args})`,
+                );
 
                 this.emit(WebSocketEvents.Status, newState);
                 break;
             }
-            case "stats": {
+            case WebSocketEvents.Stats: {
                 const raw = message.args?.[0];
-                assert(raw, `received the '${message.event}' event but without any arguments`);
+                assert(raw, `received the '${message.event}' event but without any arguments (args: ${message.args})`);
 
                 const stats = webSocketStatsEventDataSchema.parse(JSON.parse(raw));
                 this.emit(WebSocketEvents.Stats, stats);
                 break;
             }
-            case "jwt error": {
+            case WebSocketEvents.JWTError: {
                 const error = message.args?.[0];
-                assert(error, `received the '${message.event}' event but without any arguments`);
+                assert(
+                    error,
+                    `received the '${message.event}' event but without any arguments (args: ${message.args})`,
+                );
 
                 this.emit(WebSocketEvents.JWTError, error);
                 break;
             }
-            case "daemon message": {
+            case WebSocketEvents.DaemonMessage: {
                 const log = message.args?.[0];
-                assert(log, `received the '${message.event}' event but without any arguments`);
+                assert(
+                    typeof log === "string",
+                    `received the '${message.event}' event but without any arguments (args: ${message.args})`,
+                );
 
                 this.emit(WebSocketEvents.DaemonMessage, log);
                 break;
