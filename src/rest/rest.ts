@@ -41,7 +41,6 @@ export class REST {
         const object: Record<string, string> = {
             Authorization: `Bearer ${this.client.token}`,
             Accept: "application/json",
-            Origin: this.client.url,
         };
 
         if (body) {
@@ -77,7 +76,6 @@ export class REST {
             headers: {
                 Authorization: `Bearer ${this.client.token}`,
                 Accept: "application/json",
-                Origin: this.client.url,
             },
             body: form,
         });
