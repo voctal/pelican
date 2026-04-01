@@ -2,6 +2,7 @@ import { Controller } from "../controller";
 import { ClientServer, clientServerListSchema, clientServerSchema } from "../objects/client-server";
 import { List } from "../objects/list";
 import { ResourceStats, resourceStatsSchema } from "../objects/stats";
+import { WebSocketToken, webSocketTokenSchema } from "../objects/websocket-token";
 import { PelicanError } from "../rest/errors";
 
 /**
@@ -94,6 +95,19 @@ export class ClientServers extends Controller {
     public async getResourceUsage(serverId: string): Promise<ResourceStats> {
         const json = await this.client.rest.get(`client/servers/${serverId}/resources`);
         return resourceStatsSchema.parse(json);
+    }
+
+    /**
+     * Get a WebSocket token to create a new session.
+     * Tokens expires 10 minutes after creation.
+     *
+     * Route: `GET /api/client/servers/{server}/websocket`
+     *
+     * @param serverId - Server short ID
+     */
+    public async getWebSocketToken(serverId: string): Promise<WebSocketToken> {
+        const json = await this.client.rest.get(`client/servers/${serverId}/websocket`);
+        return webSocketTokenSchema.parse(json);
     }
 
     /**
