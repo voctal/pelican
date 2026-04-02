@@ -7,25 +7,16 @@ import { PelicanError } from "../rest/errors";
 
 /**
  * A server power action.
+ *
+ * - `start`: Start the server
+ *
+ * - `stop`: Gracefully stop the server
+ *
+ * - `restart`: Restart the server
+ *
+ * - `kill`: Force kill the server process
  */
-export enum PowerAction {
-    /**
-     * Start the server.
-     */
-    Start = "start",
-    /**
-     * Gracefully stop the server.
-     */
-    Stop = "stop",
-    /**
-     * Restart the server.
-     */
-    Restart = "restart",
-    /**
-     * Force kill the server process.
-     */
-    Kill = "kill",
-}
+export type PowerAction = "start" | "stop" | "restart" | "kill";
 
 /**
  * The request options to send a command.
