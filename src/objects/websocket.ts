@@ -107,14 +107,18 @@ export enum WebSocketEvents {
  * The WebSocket event map for `PelicanWebSocket`.
  */
 export interface WebSocketEventMap {
-    [WebSocketEvents.Auth]: never[];
+    [WebSocketEvents.AuthSuccess]: never[];
     [WebSocketEvents.ConsoleOutput]: [string];
     [WebSocketEvents.Status]: [ServerState];
     [WebSocketEvents.Stats]: [WebSocketStatsEventData];
     [WebSocketEvents.JWTError]: [string];
     [WebSocketEvents.DaemonMessage]: [string];
     /**
-     * Native WebSocket "open" event
+     * An unknown Pelican event.
+     */
+    unknownEvent: [WebSocketMessage];
+    /**
+     * Native WebSocket "open" event.
      */
     open: never[];
     /**

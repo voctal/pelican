@@ -204,7 +204,7 @@ export class PelicanWebSocket extends EventEmitter<WebSocketEventMap> {
                 break;
             }
             default: {
-                this.emit(message.event, ...(message.args || []));
+                this.emit("unknownEvent", message);
                 break;
             }
         }
