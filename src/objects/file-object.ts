@@ -1,6 +1,6 @@
 import z from "zod";
 import { genericObjectSchema } from "./generic";
-import { createListSchema } from "./list";
+import { createGenericListSchema } from "./list";
 
 /**
  * The string value of the `object` property inside a file object.
@@ -72,4 +72,4 @@ export const fileObjectSchema = genericObjectSchema.extend({
     }),
 }) satisfies z.ZodType<FileObject>;
 
-export const fileObjectListSchema = createListSchema(fileObjectSchema);
+export const fileObjectListSchema = createGenericListSchema(fileObjectSchema);

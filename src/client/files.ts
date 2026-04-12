@@ -1,6 +1,6 @@
 import { Controller } from "../controller";
 import { FileObject, fileObjectListSchema, fileObjectSchema } from "../objects/file-object";
-import { List } from "../objects/list";
+import { GenericList } from "../objects/list";
 import { SignedURL, signedURLSchema } from "../objects/signed-url";
 import { PelicanError } from "../rest/errors";
 import { query } from "../rest/query";
@@ -87,7 +87,7 @@ export class Files extends Controller {
      * @param serverId - Server short ID
      * @param directory - Directory path to list (default: `/`)
      */
-    public async list(serverId: string, directory?: string): Promise<List<FileObject>> {
+    public async list(serverId: string, directory?: string): Promise<GenericList<FileObject>> {
         const params = query({ directory: directory && encodeURIComponent(directory) });
         const json = await this.client.rest.get(`client/servers/${serverId}/files/list${params}`);
 
