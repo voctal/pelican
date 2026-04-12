@@ -43,7 +43,8 @@
         // Language and Environment
         "lib": ["ESNext"],
         "target": "ESNext",
-        "useDefineForClassFields": true
+        "useDefineForClassFields": true,
+        "types": ["node"]
     },
     "include": ["src/**/*.ts"],
     "exclude": ["node_modules"]
