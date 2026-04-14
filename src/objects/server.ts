@@ -28,7 +28,11 @@ export interface ServerAttributes {
      * Can be an empty string.
      */
     description: string;
-    status: null;
+    /**
+     * If installing or transferring, it should be a string.
+     * Otherwise, null.
+     */
+    status: string | null;
     suspended: boolean;
     limits: ServerLimits;
     feature_limits: ServerFeatureLimits;
@@ -114,7 +118,7 @@ export const serverSchema = genericObjectSchema.extend({
         identifier: z.string(),
         name: z.string(),
         description: z.string(),
-        status: z.null(),
+        status: z.string().nullable(),
         suspended: z.boolean(),
         limits: z.object({
             memory: z.int(),

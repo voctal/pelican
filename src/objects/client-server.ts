@@ -38,7 +38,7 @@ export interface ClientServerAttributes {
     docker_image: string;
     egg_features: unknown[] | null;
     feature_limits: ClientServerFeatureLimits;
-    status: unknown | null;
+    status: string | null;
     is_suspended: boolean;
     is_installing: boolean;
     is_transferring: boolean;
@@ -134,7 +134,7 @@ export const clientServerSchema = genericObjectSchema.extend({
             allocations: z.int(),
             backups: z.int(),
         }),
-        status: z.unknown().nullable(),
+        status: z.string().nullable(),
         is_suspended: z.boolean(),
         is_installing: z.boolean(),
         is_transferring: z.boolean(),
