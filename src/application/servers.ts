@@ -184,7 +184,7 @@ export class Servers extends Controller {
      *
      * Route: `GET /api/application/servers/external/{external_id}`
      */
-    public async getByExternalId(externalId: number): Promise<Server> {
+    public async getByExternalId(externalId: string): Promise<Server> {
         const json = await this.client.rest.get(`application/servers/external/${externalId}`);
         return serverSchema.parse(json);
     }
