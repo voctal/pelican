@@ -30,7 +30,7 @@ export interface AllocationAttributes {
     /**
      * Friendly name/hostname for the IP.
      */
-    ip_alias: string | null;
+    ip_alias?: string | null;
     /**
      * Port number.
      */
@@ -42,7 +42,7 @@ export interface AllocationAttributes {
     /**
      * Whether this is the primary allocation.
      */
-    is_default: boolean;
+    is_default?: boolean;
 }
 
 export const allocationSchema = genericObjectSchema.extend({
@@ -50,10 +50,10 @@ export const allocationSchema = genericObjectSchema.extend({
     attributes: z.object({
         id: z.int(),
         ip: z.string(),
-        ip_alias: z.string().nullable(),
+        ip_alias: z.string().nullable().optional(),
         port: z.int(),
         notes: z.string().nullable(),
-        is_default: z.boolean(),
+        is_default: z.boolean().optional(),
     }),
 }) satisfies z.ZodType<Allocation>;
 
