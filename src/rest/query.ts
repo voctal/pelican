@@ -7,7 +7,7 @@ export const query = (options: object | undefined): string => {
     const qs = new URLSearchParams();
 
     for (const [k, v] of Object.entries(options)) {
-        if (typeof v !== "string" || typeof v !== "number") continue;
+        if (typeof v !== "string" && typeof v !== "number") continue;
         qs.set(k, `${v}`);
     }
 
