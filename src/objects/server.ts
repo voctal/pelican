@@ -87,7 +87,7 @@ export interface ServerLimits {
  */
 export interface ServerFeatureLimits {
     databases: number;
-    allocations: number;
+    allocations: number | null;
     backups: number;
 }
 
@@ -132,7 +132,7 @@ export const serverSchema = genericObjectSchema.extend({
         }),
         feature_limits: z.object({
             databases: z.int(),
-            allocations: z.int(),
+            allocations: z.int().nullable(),
             backups: z.int(),
         }),
         user: z.int(),
