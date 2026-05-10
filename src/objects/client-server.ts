@@ -87,7 +87,7 @@ export interface ClientServerLimits {
  */
 export interface ClientServerFeatureLimits {
     databases: number;
-    allocations: number;
+    allocations: number | null;
     backups: number;
 }
 
@@ -131,7 +131,7 @@ export const clientServerSchema = genericObjectSchema.extend({
         egg_features: z.array(z.unknown()).nullable(),
         feature_limits: z.object({
             databases: z.int(),
-            allocations: z.int(),
+            allocations: z.int().nullable(),
             backups: z.int(),
         }),
         status: z.string().nullable(),
