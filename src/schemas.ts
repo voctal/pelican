@@ -6,6 +6,11 @@ export { eggVariableSchema, eggVariableListSchema } from "./objects/egg-variable
 export { fileObjectSchema, fileObjectListSchema } from "./objects/file-object";
 export { genericObjectSchema } from "./objects/generic";
 export { createGenericListSchema, createListSchema } from "./objects/list";
+export {
+    nodeConfigurationSchema,
+    nodeConfigurationAPISchema,
+    nodeConfigurationSystemSchema,
+} from "./objects/node-configuration";
 export { nodeSchema, nodeListSchema } from "./objects/node";
 export { serverSchema, serverListSchema } from "./objects/server";
 export { signedURLSchema } from "./objects/signed-url";

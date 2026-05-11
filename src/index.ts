@@ -33,6 +33,7 @@ export type { eggVariableObjectType, EggVariable, EggVariableAttributes } from "
 export type { fileObjectObjectType, FileObject, FileObjectAttributes } from "./objects/file-object";
 export type { GenericObject } from "./objects/generic";
 export type { listObjectType, GenericList, List, ListMeta } from "./objects/list";
+export type { NodeConfiguration, NodeConfigurationAPI, NodeConfigurationSystem } from "./objects/node-configuration";
 export type { nodeObjectType, Node, NodeAttributes, NodeAllocatedResources } from "./objects/node";
 export type {
     serverObjectType,

@@ -1,6 +1,7 @@
 import { Controller } from "../controller";
 import { List } from "../objects/list";
 import { Node, nodeListSchema, nodeSchema } from "../objects/node";
+import { NodeConfiguration, nodeConfigurationSchema } from "../objects/node-configuration";
 import { query } from "../rest/query";
 import { Filters, Includes, Sorter } from "../utils";
 
@@ -62,5 +63,15 @@ export class Nodes extends Controller {
     public async get(id: number): Promise<Node> {
         const json = await this.client.rest.get(`application/nodes/${id}`);
         return nodeSchema.parse(json);
+    }
+
+    /**
+     * Returns the configuration information for a node.
+     *
+     * Route: `GET /api/application/nodes/{node}/configuration`
+     */
+    public async getConfiguration(id: number): Promise<NodeConfiguration> {
+        const json = await this.client.rest.get(`application/nodes/${id}/configuration`);
+        return nodeConfigurationSchema.parse(json);
     }
 }
