@@ -1,3 +1,6 @@
 node_modules
 dist
 dist-docs
+
+# The development test file
+module-test.*
