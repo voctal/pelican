@@ -1,5 +1,6 @@
 import assert from "node:assert";
 import EventEmitter from "node:events";
+import { inspect } from "node:util";
 import { PelicanClient } from "../client/client";
 import { PowerAction } from "../client/client-servers";
 import {
@@ -159,7 +160,7 @@ export class PelicanWebSocket extends EventEmitter<WebSocketEventMap> {
                 const log = message.args?.[0];
                 assert(
                     typeof log === "string",
-                    `received the '${message.event}' event but with invalid arguments (args: ${message.args})`,
+                    `received the '${message.event}' event but with invalid arguments (args: ${inspect(message.args)})`,
                 );
 
                 this.emit(WebSocketEvents.ConsoleOutput, log);
@@ -169,7 +170,7 @@ export class PelicanWebSocket extends EventEmitter<WebSocketEventMap> {
                 const newState = message.args?.[0];
                 assert(
                     newState,
-                    `received the '${message.event}' event but without any arguments (args: ${message.args})`,
+                    `received the '${message.event}' event but without any arguments (args: ${inspect(message.args)})`,
                 );
 
                 this.emit(WebSocketEvents.Status, newState);
@@ -177,7 +178,10 @@ export class PelicanWebSocket extends EventEmitter<WebSocketEventMap> {
             }
             case WebSocketEvents.Stats: {
                 const raw = message.args?.[0];
-                assert(raw, `received the '${message.event}' event but without any arguments (args: ${message.args})`);
+                assert(
+                    raw,
+                    `received the '${message.event}' event but without any arguments (args: ${inspect(message.args)})`,
+                );
 
                 const stats = webSocketStatsEventDataSchema.parse(JSON.parse(raw));
                 this.emit(WebSocketEvents.Stats, stats);
@@ -187,7 +191,7 @@ export class PelicanWebSocket extends EventEmitter<WebSocketEventMap> {
                 const error = message.args?.[0];
                 assert(
                     error,
-                    `received the '${message.event}' event but without any arguments (args: ${message.args})`,
+                    `received the '${message.event}' event but without any arguments (args: ${inspect(message.args)})`,
                 );
 
                 this.emit(WebSocketEvents.JWTError, error);
@@ -197,7 +201,7 @@ export class PelicanWebSocket extends EventEmitter<WebSocketEventMap> {
                 const log = message.args?.[0];
                 assert(
                     typeof log === "string",
-                    `received the '${message.event}' event but without any arguments (args: ${message.args})`,
+                    `received the '${message.event}' event but without any arguments (args: ${inspect(message.args)})`,
                 );
 
                 this.emit(WebSocketEvents.DaemonMessage, log);
