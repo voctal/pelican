@@ -30,7 +30,7 @@ export interface UserListOptions {
     /**
      * Include relationships.
      */
-    include?: Includes<"servers" | string>;
+    include?: Includes<"servers" | (string & {})>;
 }
 
 export interface UserCreateOptions {

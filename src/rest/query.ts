@@ -27,6 +27,7 @@ export const query = (options: object | undefined): string => {
         qs.set("include", includes.join(","));
     }
 
+    // oxlint-disable-next-line typescript/restrict-template-expressions
     const stringified = `${qs}`;
     return stringified ? `?${stringified}` : "";
 };
