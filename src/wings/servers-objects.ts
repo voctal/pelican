@@ -143,34 +143,38 @@ export interface WingServerConfiguration {
          */
         file_denylist: string[];
         /**
+         * The egg features.
+         *
          * e.g.
          *
+         * ```json
+         * {
+         *   "eula": [
+         *     "you need to agree to the eula in order to run the server"
+         *   ],
+         *   "gsl_token": [ "(gsl token expired)", "(account not found)" ],
+         *   "java_version": [
+         *     "java.lang.UnsupportedClassVersionError",
+         *     "unsupported major.minor version",
+         *     "has been compiled by a more recent version of the java runtime",
+         *     "minecraft 1.17 requires running the server with java 16 or above",
+         *     "minecraft 1.18 requires running the server with java 17 or above",
+         *     "minecraft 1.19 requires running the server with java 17 or above"
+         *   ],
+         *   "pid_limit": [
+         *     "pthread_create failed",
+         *     "failed to create thread",
+         *     "unable to create thread",
+         *     "unable to create native thread",
+         *     "unable to create new native thread",
+         *     "exception in thread \"craft async scheduler management thread\""
+         *   ],
+         *   "steam_disk_space": [
+         *     "steamcmd needs 250mb of free disk space to update",
+         *     "0x202 after update job"
+         *   ]
+         * }
          * ```
-         *  eula: [
-         *    'you need to agree to the eula in order to run the server'
-         *  ],
-         *  gsl_token: [ '(gsl token expired)', '(account not found)' ],
-         *  java_version: [
-         *    'java.lang.UnsupportedClassVersionError',
-         *    'unsupported major.minor version',
-         *    'has been compiled by a more recent version of the java runtime',
-         *    'minecraft 1.17 requires running the server with java 16 or above',
-         *    'minecraft 1.18 requires running the server with java 17 or above',
-         *    'minecraft 1.19 requires running the server with java 17 or above'
-         *  ],
-         *  pid_limit: [
-         *    'pthread_create failed',
-         *    'failed to create thread',
-         *    'unable to create thread',
-         *    'unable to create native thread',
-         *    'unable to create new native thread',
-         *    'exception in thread "craft async scheduler management thread"'
-         *  ],
-         *  steam_disk_space: [
-         *    'steamcmd needs 250mb of free disk space to update',
-         *    '0x202 after update job'
-         *  ]
-         *    ```
          */
         features: Record<string, string[]> | null;
     };
