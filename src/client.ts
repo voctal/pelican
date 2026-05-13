@@ -5,11 +5,17 @@ import { REST } from "./rest/rest";
  */
 export interface ClientOptions {
     /**
-     * Either an application token or a user token (api key).
+     * One of:
+     *
+     * - Application API Key
+     *
+     * - Client API Key
+     *
+     * - Wing Token
      */
     token: string;
     /**
-     * The root panel URL.
+     * The root panel URL, or a wing URL.
      */
     url: string;
 }
@@ -30,7 +36,7 @@ export abstract class Client {
 
     public constructor(options: ClientOptions) {
         if (options.url.endsWith("/api")) {
-            throw new Error("options.url must be the panel URL. It cannot ends with /api");
+            throw new Error("options.url must be the base URL. It cannot ends with /api");
         }
 
         this.token = options.token;
