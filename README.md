@@ -23,6 +23,7 @@ You can find the Pelican API docs on your own panel at `https://<domain>/docs/ap
 - Client API
 - Application API
 - WebSocket API
+- Wings API
 - All responses are validated using Zod
 - (almost) Fully typed and documented
 
@@ -94,6 +95,23 @@ ws.on(WebSocketEvents.Stats, stats => {
 });
 
 await ws.connect();
+```
+
+Use `PelicanWing` to interact with the Wings API:
+
+```js
+import { PelicanWing } from "@voctal/pelican";
+
+const wing = new PelicanWing({
+    token: "wing token from the node config file",
+    url: "https://node.example.com:8080",
+});
+
+const system = await wing.system.get();
+const utilization = await wing.system.getUtilization();
+const servers = await wing.servers.list();
+const logs = await wing.servers.getLogs(serverUuid);
+// See all methods on the documentation
 ```
 
 If you are using the `REST` class, you might need the Zod schemas to validate the responses. They are all available from `@voctal/pelican/schemas`:
