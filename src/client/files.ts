@@ -1,5 +1,10 @@
 import { Controller } from "../controller";
-import { FileObject, fileObjectListSchema, fileObjectSchema } from "../objects/file-object";
+import {
+    FileObject,
+    fileObjectListSchema,
+    fileObjectSchema,
+    invalidFileObjectListSchema,
+} from "../objects/file-object";
 import { GenericList } from "../objects/list";
 import { SignedURL, signedURLSchema } from "../objects/signed-url";
 import { PelicanError } from "../rest/errors";
@@ -82,6 +87,8 @@ export class Files extends Controller {
      * Returns a listing of files in a given directory.
      * Do not encode `directory`, as it will already call `encodeURIComponent` on it.
      *
+     * It will return an empty list if the path does not exist.
+     *
      * Route: `GET /api/client/servers/{server}/files/list`
      *
      * @param serverId - Server short ID
@@ -90,6 +97,13 @@ export class Files extends Controller {
     public async list(serverId: string, directory?: string): Promise<GenericList<FileObject>> {
         const params = query({ directory: directory && encodeURIComponent(directory) });
         const json = await this.client.rest.get(`client/servers/${serverId}/files/list${params}`);
+
+        // Apparently, when listing an empty directory or an invalid one,
+        // the API returns a list with only one element, that has
+        // some fields to null ('name', 'mode', 'mode_bits', 'size')
+        if (invalidFileObjectListSchema.safeParse(json).success) {
+            return { object: "list", data: [] };
+        }
 
         return fileObjectListSchema.parse(json);
     }

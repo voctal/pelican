@@ -72,4 +72,16 @@ export const fileObjectSchema = genericObjectSchema.extend({
     }),
 }) satisfies z.ZodType<FileObject>;
 
+export const invalidFileObjectSchema = genericObjectSchema.extend({
+    object: z.literal(fileObjectObjectType),
+    attributes: z.object({
+        name: z.null(),
+        mode: z.null(),
+        mode_bits: z.null(),
+        size: z.null(),
+    }),
+});
+
+export const invalidFileObjectListSchema = createGenericListSchema(invalidFileObjectSchema);
+
 export const fileObjectListSchema = createGenericListSchema(fileObjectSchema);
