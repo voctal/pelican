@@ -12,6 +12,10 @@ export * from "./client/files";
 
 export * from "./websocket/websocket";
 
+export * from "./wings/client";
+export * from "./wings/servers";
+export * from "./wings/system";
+
 export * from "./rest/errors";
 export * from "./rest/rest";
 
@@ -59,3 +63,17 @@ export {
     type WebSocketEventMap,
     type WebSocketStatsEventData,
 } from "./objects/websocket";
+
+export type {
+    WingServer,
+    WingServerLogs,
+    WingServerConfiguration,
+    WingServerUtilization,
+} from "./wings/servers-objects";
+export type {
+    System,
+    SystemDockerDisk,
+    SystemIPs,
+    SystemUtilization,
+    SystemUtilizationDiskDetails,
+} from "./wings/system-objects";

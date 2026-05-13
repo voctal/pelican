@@ -18,3 +18,17 @@ export { resourceStatsSchema } from "./objects/stats";
 export { userSchema, userListSchema, createdUserSchema } from "./objects/user";
 export { webSocketTokenSchema } from "./objects/websocket-token";
 export { webSocketMessageSchema, webSocketStatsEventDataSchema } from "./objects/websocket";
+
+export {
+    wingServerConfigurationSchema,
+    wingServerLogsSchema,
+    wingServerSchema,
+    wingServerUtilizationSchema,
+} from "./wings/servers-objects";
+export {
+    wingSystemDockerDiskSchema,
+    wingSystemIPsSchema,
+    wingSystemSchema,
+    wingSystemUtilizationDiskDetailsSchema,
+    wingSystemUtilizationSchema,
+} from "./wings/system-objects";
