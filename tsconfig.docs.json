@@ -4,7 +4,8 @@
     "compilerOptions": {
         "emitDeclarationOnly": true,
         "declarationMap": true,
-        "outDir": "dist-docs"
+        "rootDir": "./src",
+        "outDir": "./dist-docs"
     },
     "include": ["src/**/*.ts"],
     "exclude": ["node_modules"]
