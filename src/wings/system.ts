@@ -1,4 +1,5 @@
 import { Controller } from "../controller";
+import { query } from "../rest/query";
 import {
     System,
     SystemDockerDisk,
@@ -9,6 +10,24 @@ import {
     wingSystemSchema,
     wingSystemUtilizationSchema,
 } from "./system-objects";
+
+/**
+ * The request options to the system diagnostics.
+ */
+export interface WingGetSystemDiagnosticsOptions {
+    /**
+     * Include the endpoints.
+     */
+    include_endpoints?: boolean;
+    /**
+     * Include the logs.
+     */
+    include_logs?: boolean;
+    /**
+     * Number of lines to returns. 200 by default. Should be in `]0;500]`.
+     */
+    log_lines?: number;
+}
 
 /**
  * The wing system controller.
@@ -46,6 +65,18 @@ export class WingSystem extends Controller {
     public async getIPs(): Promise<SystemIPs> {
         const json = await this.client.rest.get("system/ips");
         return wingSystemIPsSchema.parse(json);
+    }
+
+    /**
+     * Generates the system diagnostics.
+     *
+     * Route: `GET <wing>/api/system/diagnostics`
+     */
+    public async getDiagnostics(options: WingGetSystemDiagnosticsOptions): Promise<string> {
+        const params = query(options);
+        const response = await this.client.rest.rawGet(`system/diagnostics${params}`);
+
+        return await response.text();
     }
 
     /**
