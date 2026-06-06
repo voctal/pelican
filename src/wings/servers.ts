@@ -1,7 +1,14 @@
 import { z } from "zod";
 import { Controller } from "../controller";
 import { query } from "../rest/query";
-import { WingServer, WingServerLogs, wingServerLogsSchema, wingServerSchema } from "./servers-objects";
+import {
+    WingServer,
+    WingServerInstallLogs,
+    wingServerInstallLogsSchema,
+    WingServerLogs,
+    wingServerLogsSchema,
+    wingServerSchema,
+} from "./servers-objects";
 
 /**
  * The request options to list nodes.
@@ -52,5 +59,15 @@ export class WingServers extends Controller {
         const json = await this.client.rest.get(`servers/${uuid}/logs${params}`);
 
         return wingServerLogsSchema.parse(json);
+    }
+
+    /**
+     * Returns the last install logs of a server.
+     *
+     * Route: `GET <wing>/api/servers/{uuid}/install-logs`
+     */
+    public async getInstallLogs(uuid: string): Promise<WingServerInstallLogs> {
+        const json = await this.client.rest.get(`servers/${uuid}/install-logs`);
+        return wingServerInstallLogsSchema.parse(json);
     }
 }

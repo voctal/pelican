@@ -69,6 +69,7 @@ export type {
     WingServerLogs,
     WingServerConfiguration,
     WingServerUtilization,
+    WingServerInstallLogs,
 } from "./wings/servers-objects";
 export type {
     System,

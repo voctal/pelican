@@ -266,3 +266,17 @@ export interface WingServerLogs {
 export const wingServerLogsSchema = z.object({
     data: z.array(z.string()),
 }) satisfies z.ZodType<WingServerLogs>;
+
+/**
+ * The install logs of a server.
+ */
+export interface WingServerInstallLogs {
+    /**
+     * The logs.
+     */
+    data: string;
+}
+
+export const wingServerInstallLogsSchema = z.object({
+    data: z.string(),
+}) satisfies z.ZodType<WingServerInstallLogs>;

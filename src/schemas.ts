@@ -29,6 +29,7 @@ export {
     wingServerLogsSchema,
     wingServerSchema,
     wingServerUtilizationSchema,
+    wingServerInstallLogsSchema,
 } from "./wings/servers-objects";
 export {
     wingSystemDockerDiskSchema,
