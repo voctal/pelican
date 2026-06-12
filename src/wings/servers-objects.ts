@@ -187,7 +187,7 @@ export interface WingServerConfiguration {
          *
          * e.g. `ghcr.io/parkervcp/yolks:python_3.14`
          */
-        image: string;
+        image?: string;
     };
 }
 
@@ -221,7 +221,7 @@ export const wingServerConfigurationSchema = z.object({
         features: z.record(z.string(), z.array(z.string())).nullable(),
     }),
     container: z.object({
-        image: z.string().min(1),
+        image: z.string().min(1).optional(),
     }),
 }) satisfies z.ZodType<WingServerConfiguration>;
 
