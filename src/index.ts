@@ -1,4 +1,5 @@
 export * from "./application/client";
+export * from "./application/mounts";
 export * from "./application/nodes";
 export * from "./application/servers";
 export * from "./application/users";
@@ -38,6 +39,7 @@ export type { eggObjectType, Egg, EggAttributes } from "./objects/egg";
 export type { fileObjectObjectType, FileObject, FileObjectAttributes } from "./objects/file-object";
 export type { GenericObject } from "./objects/generic";
 export type { listObjectType, GenericList, List, ListMeta } from "./objects/list";
+export type { mountObjectType, Mount, MountAttributes } from "./objects/mount";
 export type { NodeConfiguration, NodeConfigurationAPI, NodeConfigurationSystem } from "./objects/node-configuration";
 export type { nodeObjectType, Node, NodeAttributes, NodeAllocatedResources } from "./objects/node";
 export type {

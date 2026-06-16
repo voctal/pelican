@@ -12,6 +12,7 @@ export {
 } from "./objects/file-object";
 export { genericObjectSchema } from "./objects/generic";
 export { createGenericListSchema, createListSchema } from "./objects/list";
+export { mountSchema, mountListSchema, mountGenericListSchema } from "./objects/mount";
 export {
     nodeConfigurationSchema,
     nodeConfigurationAPISchema,
