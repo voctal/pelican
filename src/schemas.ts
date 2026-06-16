@@ -3,6 +3,7 @@ export { apiKeySchema, apiKeyListSchema, createdApiKeySchema } from "./objects/a
 export { clientServerSchema, clientServerListSchema } from "./objects/client-server";
 export { clientUserSchema } from "./objects/client-user";
 export { eggVariableSchema, eggVariableListSchema } from "./objects/egg-variable";
+export { eggSchema, eggListSchema, eggGenericListSchema } from "./objects/egg";
 export {
     fileObjectSchema,
     fileObjectListSchema,

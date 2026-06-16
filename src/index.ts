@@ -34,6 +34,7 @@ export type {
 } from "./objects/client-server";
 export type { ClientUser, ClientUserAttributes } from "./objects/client-user";
 export type { eggVariableObjectType, EggVariable, EggVariableAttributes } from "./objects/egg-variable";
+export type { eggObjectType, Egg, EggAttributes } from "./objects/egg";
 export type { fileObjectObjectType, FileObject, FileObjectAttributes } from "./objects/file-object";
 export type { GenericObject } from "./objects/generic";
 export type { listObjectType, GenericList, List, ListMeta } from "./objects/list";
