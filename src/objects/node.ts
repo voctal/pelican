@@ -1,6 +1,6 @@
 import z from "zod";
 import { GenericObject, genericObjectSchema } from "./generic";
-import { createListSchema } from "./list";
+import { createGenericListSchema, createListSchema } from "./list";
 
 /**
  * The string value of the `object` property inside a node object.
@@ -93,5 +93,7 @@ export const nodeSchema = genericObjectSchema.extend({
         }),
     }),
 }) satisfies z.ZodType<Node>;
+
+export const nodeGenericListSchema = createGenericListSchema(nodeSchema);
 
 export const nodeListSchema = createListSchema(nodeSchema);

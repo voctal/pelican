@@ -1,8 +1,8 @@
-export { allocationSchema, allocationListSchema } from "./objects/allocation";
+export { allocationSchema, allocationListSchema, allocationGenericListSchema } from "./objects/allocation";
 export { apiKeySchema, apiKeyListSchema, createdApiKeySchema } from "./objects/api-key";
 export { clientServerSchema, clientServerListSchema } from "./objects/client-server";
 export { clientUserSchema } from "./objects/client-user";
-export { eggVariableSchema, eggVariableListSchema } from "./objects/egg-variable";
+export { eggVariableSchema, eggVariableListSchema, eggVariableGenericListSchema } from "./objects/egg-variable";
 export { eggSchema, eggListSchema, eggGenericListSchema } from "./objects/egg";
 export {
     fileObjectSchema,
@@ -17,8 +17,8 @@ export {
     nodeConfigurationAPISchema,
     nodeConfigurationSystemSchema,
 } from "./objects/node-configuration";
-export { nodeSchema, nodeListSchema } from "./objects/node";
-export { serverSchema, serverListSchema } from "./objects/server";
+export { nodeSchema, nodeListSchema, nodeGenericListSchema } from "./objects/node";
+export { serverSchema, serverListSchema, serverGenericListSchema } from "./objects/server";
 export { signedURLSchema } from "./objects/signed-url";
 export { resourceStatsSchema } from "./objects/stats";
 export { userSchema, userListSchema, createdUserSchema } from "./objects/user";

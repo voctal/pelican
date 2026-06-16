@@ -1,6 +1,6 @@
 import z from "zod";
 import { GenericObject, genericObjectSchema } from "./generic";
-import { createListSchema } from "./list";
+import { createGenericListSchema, createListSchema } from "./list";
 
 /**
  * The string value of the `object` property inside an allocation.
@@ -56,5 +56,7 @@ export const allocationSchema = genericObjectSchema.extend({
         is_default: z.boolean().optional(),
     }),
 }) satisfies z.ZodType<Allocation>;
+
+export const allocationGenericListSchema = createGenericListSchema(allocationSchema);
 
 export const allocationListSchema = createListSchema(allocationSchema);

@@ -1,6 +1,6 @@
 import z from "zod";
 import { GenericObject, genericObjectSchema } from "./generic";
-import { createListSchema } from "./list";
+import { createGenericListSchema, createListSchema } from "./list";
 
 /**
  * The string value of the `object` property inside a server.
@@ -149,5 +149,7 @@ export const serverSchema = genericObjectSchema.extend({
         created_at: z.string(),
     }),
 }) satisfies z.ZodType<Server>;
+
+export const serverGenericListSchema = createGenericListSchema(serverSchema);
 
 export const serverListSchema = createListSchema(serverSchema);

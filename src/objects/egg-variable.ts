@@ -1,6 +1,6 @@
 import z from "zod";
 import { GenericObject, genericObjectSchema } from "./generic";
-import { createListSchema } from "./list";
+import { createGenericListSchema, createListSchema } from "./list";
 
 /**
  * The string value of the `object` property inside an egg variable.
@@ -20,7 +20,7 @@ export interface EggVariable extends GenericObject {
  */
 export interface EggVariableAttributes {
     /**
-     * 	Human-readable variable name.
+     * Human-readable variable name.
      */
     name: string;
     /**
@@ -61,5 +61,7 @@ export const eggVariableSchema = genericObjectSchema.extend({
         rules: z.string(),
     }),
 }) satisfies z.ZodType<EggVariable>;
+
+export const eggVariableGenericListSchema = createGenericListSchema(eggVariableSchema);
 
 export const eggVariableListSchema = createListSchema(eggVariableSchema);
