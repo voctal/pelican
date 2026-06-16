@@ -11,12 +11,14 @@
 
 ## About
 
-`@voctal/pelican` allows you to easily use the [Pelican Panel](https://pelican.dev) API. See the [module documentation](https://docs.voctal.dev/docs/packages/pelican/stable).
+`@voctal/pelican` allows you to easily use the [Pelican](https://pelican.dev) panel API. See the [module documentation](https://docs.voctal.dev/docs/packages/pelican/stable).
 
 You can find the Pelican API docs on your own panel at `https://<domain>/docs/api`, or on the demo: https://demo.pelican.dev/docs/api.
 
 > [!NOTE]
-> This module is still under development and does not include every features. Not everything was fully tested. However you can use the `rest` property of `PelicanApplication` and `PelicanClient` to access the API routes that this module does not support.
+> This module is still under development and does not include every features. Not everything was fully tested. However you can use the `rest` property of `PelicanApplication` and `PelicanClient` to access the API routes that this module has not yet implemented.
+
+This module is tested on [Orion Hosting](https://orionhost.xyz).
 
 ## Features
 
@@ -37,20 +39,29 @@ npm install @voctal/pelican
 
 ## Example usage
 
+### Application API
+
 Use `PelicanApplication` to interact with the Application API:
 
 ```js
 import { PelicanApplication } from "@voctal/pelican";
 
 const application = new PelicanApplication({
-    token: "...",
-    url: "https://example.com",
+    token: "application api key here",
+    url: "https://panel.example.com",
 });
 
-const servers = await application.servers.list();
-const users = await application.users.list();
-// See all methods on the documentation
+// examples:
+const servers = await application.servers.list(); // list servers
+const users = await application.users.list(); // list users
+const nodes = await application.nodes.list(); // list nodes
+await application.servers.suspend(1); // suspend a server
+
+// See all methods on the documentation of PelicanApplication
+// https://docs.voctal.dev/docs/packages/pelican/stable/PelicanApplication:Class
 ```
+
+### Client API
 
 Use `PelicanClient` to interact with the Client API:
 
@@ -58,15 +69,21 @@ Use `PelicanClient` to interact with the Client API:
 import { PelicanClient } from "@voctal/pelican";
 
 const client = new PelicanClient({
-    token: "...",
-    url: "https://example.com",
+    token: "client api key here",
+    url: "https://panel.example.com",
 });
 
-const account = await client.account.get();
-const servers = await client.servers.list();
-const files = await client.files.list(serverId);
-// See all methods on the documentation
+// examples:
+const account = await client.account.get(); // get account details
+const servers = await client.servers.list(); // list servers
+const files = await client.files.list("yourServerId"); // list the server files
+await client.servers.sendPowerAction("yourServerId", { signal: "restart" }); // restart a server
+
+// See all methods on the documentation of PelicanClient
+// https://docs.voctal.dev/docs/packages/pelican/stable/PelicanClient:Class
 ```
+
+### WebSocket API
 
 Use `PelicanWebSocket` to interact with the WebSocket API:
 
@@ -74,14 +91,14 @@ Use `PelicanWebSocket` to interact with the WebSocket API:
 import { PelicanClient, PelicanWebSocket, WebSocketEvents } from "@voctal/pelican";
 
 const client = new PelicanClient({
-    token: "...",
-    url: "https://example.com",
+    token: "client api key here",
+    url: "https://panel.example.com",
 });
 
 // Get a server identifier
 const servers = await client.servers.list();
 const firstServerId = servers.data[0]?.attributes.identifier;
-if (!firstServerId) return console.log("No servers!");
+if (!firstServerId) return console.log("You have no servers!");
 
 // Create the WebSocket
 const ws = new PelicanWebSocket(client, firstServerId);
@@ -95,7 +112,12 @@ ws.on(WebSocketEvents.Stats, stats => {
 });
 
 await ws.connect();
+
+// See all methods on the documentation of PelicanWebSocket
+// https://docs.voctal.dev/docs/packages/pelican/stable/PelicanWebSocket:Class
 ```
+
+### Wings API
 
 Use `PelicanWing` to interact with the Wings API:
 
@@ -110,16 +132,33 @@ const wing = new PelicanWing({
 const system = await wing.system.get();
 const utilization = await wing.system.getUtilization();
 const servers = await wing.servers.list();
-const logs = await wing.servers.getLogs(serverUuid);
-// See all methods on the documentation
+const logs = await wing.servers.getLogs("yourServerUUID");
+
+// See all methods on the documentation of PelicanWing
+// https://docs.voctal.dev/docs/packages/pelican/stable/PelicanWing:Class
 ```
 
-If you are using the `REST` class, you might need the Zod schemas to validate the responses. They are all available from `@voctal/pelican/schemas`:
+## Validation
+
+Since the module does not implement everything, you may need to use the `REST` class:
+
+```js
+const application = new PelicanApplication({
+    /* ... */
+});
+
+const json = await application.rest.get("application/servers");
+// "json" is typed as "unknown"
+```
+
+In that case, you may need the [Zod](https://zod.dev) schemas to validate the responses. They are all available from `@voctal/pelican/schemas`:
 
 ```js
 import { userSchema } from "@voctal/pelican/schemas";
 
 userSchema.parse(data);
+
+// See all exported schemas in https://github.com/voctal/pelican/blob/main/src/schemas.ts
 ```
 
 ## Links
