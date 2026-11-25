@@ -1,7 +1,7 @@
 {
     "$schema": "https://json.schemastore.org/package.json",
     "name": "@voctal/pelican",
-    "version": "0.11.0",
+    "version": "0.12.0",
     "description": "An unofficial TypeScript Pelican API wrapper",
     "keywords": [
         "api",
@@ -58,10 +58,10 @@
         "docs": "npm run build:docs && api-extractor run --local"
     },
     "dependencies": {
-        "zod": "^4.4.3"
+        "zod": "^4.6.7"
     },
     "devDependencies": {
-        "@microsoft/api-extractor": "^7.58.2",
+        "@microsoft/api-extractor": "^7.60.1",
         "@types/node": "^25.5.0",
         "oxfmt": "^0.48.0",
         "oxlint": "^1.63.0",

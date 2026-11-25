@@ -84,7 +84,7 @@ export interface NodeConfiguration {
     /**
      * If the node is in debug mode.
      */
-    debug: boolean;
+    debug?: boolean;
     /**
      * The UUID of the node.
      */
@@ -120,7 +120,7 @@ export interface NodeConfiguration {
 }
 
 export const nodeConfigurationSchema = z.object({
-    debug: z.boolean(),
+    debug: z.boolean().optional(),
     uuid: z.string().min(1),
     token_id: z.string().min(1),
     token: z.string().min(1),
